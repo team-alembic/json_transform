@@ -1,8 +1,8 @@
-defmodule SnakeVsCamel.Mixfile do
+defmodule JsonTransform.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :snake_vs_camel,
+    [app: :json_transform,
      version: "0.1.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
@@ -28,6 +28,8 @@ defmodule SnakeVsCamel.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      { :inflex, "~> 1.8.1" }
+    ]
   end
 end

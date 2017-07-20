@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :snake_vs_camel, key: :value
+#     config :json_transform, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:snake_vs_camel, :key)
+#     Application.get_env(:json_transform, :key)
 #
 # Or configure a 3rd-party app:
 #
