@@ -1,9 +1,22 @@
 defmodule JsonTransform do
+  @moduledoc """
+  JsonTransform is a module for transforming the keys of a Map or Struct before
+  conversion to JSON.
+  """
 
-  def snake(value), do: value |> transform(&to_snake/1)
-  def camel(value), do: value |> transform(&to_camel/1)
+  @type map_or_list :: map() | list()
+  @type trans_fn :: (String.t -> String.t)
 
-  def transform(value, trans_fn)
+  @doc """
+  Transforms the keys of Elixir list or map or struct for the purpose of converting
+  the case convention of keys. *trans_fn/1* is the function that takes a string key
+  as input and returns a new transformed key.
+
+    See JsonTransform.Transformers for a list of included transformation functions.
+  You are also free to provide your own.
+  """
+  @spec transform(map_or_list, trans_fn) :: map_or_list
+  def transform(map_or_list, trans_fn)
   def transform(%_{} = value, trans_fn), do: value |> Map.from_struct |> transform(trans_fn)
   def transform(value, trans_fn) when is_map(value) do
     value
@@ -19,22 +32,12 @@ defmodule JsonTransform do
   end
   def transform(value, _), do: value
 
-  def transform_key(key, trans_fn) when is_binary(key), do: trans_fn.(key)
-  def transform_key(key, trans_fn) when is_atom(key), do: key |> Atom.to_string |> trans_fn.()
-  def transform_key(key, _), do: key
+  defp transform_key(key, trans_fn) when is_binary(key), do: trans_fn.(key)
+  defp transform_key(key, trans_fn) when is_atom(key), do: key |> Atom.to_string |> trans_fn.()
+  defp transform_key(key, _), do: key
 
-  def transform_value(value, trans_fn) when is_map(value) or is_list(value) do
+  defp transform_value(value, trans_fn) when is_map(value) or is_list(value) do
     value |> transform(trans_fn)
   end
-  def transform_value(value, _), do: value
-
-  def to_snake(key) when is_binary(key) do
-    key |> Inflex.underscore()
-  end
-  def to_snake(key), do: key
-
-  def to_camel(key) when is_binary(key) do
-    key |> Inflex.camelize(:lower)
-  end
-  def to_camel(key), do: key
+  defp transform_value(value, _), do: value
 end
