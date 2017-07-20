@@ -1,5 +1,6 @@
 defmodule JsonTransformTest do
   use ExUnit.Case
+  doctest JsonTransform
 
   import JsonTransform
 

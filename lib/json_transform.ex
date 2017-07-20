@@ -20,6 +20,12 @@ defmodule JsonTransform do
 
   See JsonTransform.Transformers for a list of included transformation
   functions. You are also free to provide your own.
+
+  ## Examples
+
+    iex> JsonTransform.transform(%{"person_name" => "James Sadler"}, &JsonTransform.Transformers.to_camel/1)
+    %{"personName" => "James Sadler"}
+
   """
   @spec transform(value :: map_or_list, trans_fn :: trans_fn) :: map_or_list
   def transform(value, trans_fn)
