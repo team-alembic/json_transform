@@ -28,7 +28,8 @@ defmodule JsonTransform.Mixfile do
       {:inflex, "~> 1.8.1"},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:plug, "~> 1.3", only: [:dev, :test]}
+      {:poison, "~> 3.1.0"},
+      {:plug, "~> 1.3"}
     ]
   end
 
