@@ -25,10 +25,10 @@ defmodule JsonTransform.Mixfile do
 
   defp deps do
     [
-      {:inflex, "~> 1.8.1"},
+      {:inflex, "~> 1.8"},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:poison, "~> 3.1.0"},
+      {:poison, "~> 3.1"},
       {:plug, "~> 1.3"}
     ]
   end
