@@ -31,21 +31,21 @@ defmodule JsonTransform.Plug do
 
     def call(conn, opts) do
       register_before_send(conn, fn(conn) ->
-        # TODO how can we do this better? It seems woefully inefficient
-        transformed_json =
-          conn.resp_body
-          |> IO.iodata_to_binary
-          |> Poison.decode!
-          |> transform(opts[:transformer])
-          |> Poison.encode!
+        output = process(conn.resp_headers, conn.resp_body, opts[:transformer])
 
         conn
-        |> resp(conn.status, transformed_json)
+        |> resp(conn.status, output)
       end)
     end
 
-    defp transform(value, transformer) do
-      value |> JsonTransform.transform(transformer)
+    defp process([{"accept", "application/vnd.api+json"}], body, transformer) do
+      # TODO how can we do this better? It seems woefully inefficient
+      body
+      |> IO.iodata_to_binary
+      |> Poison.decode!
+      |> JsonTransform.transform(transformer)
+      |> Poison.encode!
     end
+    defp process(_, body, _), do: body
   end
 end
