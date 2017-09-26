@@ -31,14 +31,18 @@ defmodule JsonTransform.Plug do
 
     def call(conn, opts) do
       register_before_send(conn, fn(conn) ->
-        output = process(conn.resp_headers, conn.resp_body, opts[:transformer])
+        output = process(get_resp_header(conn, "content-type"), conn.resp_body, opts[:transformer])
 
         conn
         |> resp(conn.status, output)
       end)
     end
 
-    defp process([{"accept", "application/vnd.api+json"}], body, transformer) do
+    defp process(["application/json"], body, transformer), do: transform(body, transformer)
+    defp process(["application/vnd.api+json"], body, transformer), do: transform(body, transformer)
+    defp process(content_type, body, _), do: body
+
+    defp transform(body, transformer) do
       # TODO how can we do this better? It seems woefully inefficient
       body
       |> IO.iodata_to_binary
@@ -46,6 +50,5 @@ defmodule JsonTransform.Plug do
       |> JsonTransform.transform(transformer)
       |> Poison.encode!
     end
-    defp process(_, body, _), do: body
   end
 end
