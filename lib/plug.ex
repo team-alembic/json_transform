@@ -40,7 +40,7 @@ defmodule JsonTransform.Plug do
 
     defp process(["application/json" <> _rest], body, transformer), do: transform(body, transformer)
     defp process(["application/vnd.api+json" <> _rest], body, transformer), do: transform(body, transformer)
-    defp process(content_type, body, _), do: body
+    defp process(_, body, _), do: body
 
     defp transform(body, transformer) do
       # TODO how can we do this better? It seems woefully inefficient
